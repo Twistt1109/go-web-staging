@@ -1,1 +1,19 @@
 port: 8080
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: "root"
+  database: "demo"
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: ""
+  db: 0
+
+log:
+  level: "debug"
+  filename: "./test.log"
+  max_size: 100
+  max_backups: 10
+  max_age: 30
