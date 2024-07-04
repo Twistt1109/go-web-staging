@@ -16,8 +16,6 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-var Logger *zap.Logger
-
 func Init(cfg *setting.LogConfig) (err error) {
 	encoder := getEncoder()                                                            // 获取日志编码器
 	writeSyncer := getLogWriter(cfg.Filename, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge) // 获取日志写入器
@@ -26,10 +24,9 @@ func Init(cfg *setting.LogConfig) (err error) {
 	err = le.UnmarshalText([]byte(cfg.Level))          // 解析日志级别
 	core := zapcore.NewCore(encoder, writeSyncer, *le) // 创建日志核心
 
-	Logger = zap.New(core, zap.AddCaller()) // zap.AddCaller()添加调用信息
+	logger := zap.New(core, zap.AddCaller()) // zap.AddCaller()添加调用信息
 
-	// 这里使用自定义的Logger, 而不是zap.L(), 习惯问题
-	// zap.ReplaceGlobals(Logger) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
+	zap.ReplaceGlobals(logger) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 	return
 }
 
@@ -62,7 +59,7 @@ func GinLogger() gin.HandlerFunc {
 		c.Next()
 
 		cost := time.Since(start)
-		Logger.Info(path,
+		zap.L().Info(path,
 			zap.Int("status", c.Writer.Status()),
 			zap.String("method", c.Request.Method),
 			zap.String("path", path),
@@ -93,7 +90,7 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 
 				httpRequest, _ := httputil.DumpRequest(c.Request, false)
 				if brokenPipe {
-					Logger.Error(c.Request.URL.Path,
+					zap.L().Error(c.Request.URL.Path,
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)
@@ -104,13 +101,13 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 				}
 
 				if stack {
-					Logger.Error("[Recovery from panic]",
+					zap.L().Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 						zap.String("stack", string(debug.Stack())),
 					)
 				} else {
-					Logger.Error("[Recovery from panic]",
+					zap.L().Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)

@@ -10,18 +10,23 @@ import (
 var Conf *AppConfig
 
 type AppConfig struct {
-	Port         string `mapstructure:"port"`
+	Name         string `mapstructure:"name"`
+	Version      string `mapstructure:"version"`
+	Mode         string `mapstructure:"mode"`
+	Port         int    `mapstructure:"port"`
 	*MysqlConfig `mapstructure:"mysql"`
 	*RedisConfig `mapstructure:"redis"`
 	*LogConfig   `mapstructure:"log"`
 }
 
 type MysqlConfig struct {
-	Host     string `mapstructure:"host"`
-	Port     int    `mapstructure:"port"`
-	User     string `mapstructure:"user"`
-	Password string `mapstructure:"password"`
-	Dbname   string `mapstructure:"dbname"`
+	Host        string `mapstructure:"host"`
+	Port        int    `mapstructure:"port"`
+	User        string `mapstructure:"user"`
+	Password    string `mapstructure:"password"`
+	Dbname      string `mapstructure:"dbname"`
+	MaxOpenConn int    `mapstructure:"max_open_conn"`
+	MaxIdleConn int    `mapstructure:"max_idle_conn"`
 }
 
 type RedisConfig struct {
@@ -29,6 +34,7 @@ type RedisConfig struct {
 	Port     int    `mapstructure:"port"`
 	Password string `mapstructure:"password"`
 	DB       int    `mapstructure:"db"`
+	PoolSize int    `mapstructure:"pool_size"`
 }
 
 type LogConfig struct {
