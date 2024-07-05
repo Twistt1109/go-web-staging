@@ -1,1 +1,8 @@
 {"level":"error","ts":"2024-07-04T23:36:14.570+0800","caller":"mysql/mysql.go:25","msg":"连接数据库失败","error":"sql: unknown driver \"mysql\" (forgotten import?)"}
+{"level":"info","ts":"2024-07-04T23:49:45.149+0800","caller":"go-web-staging/main.go:73","msg":"Shutdown Server ..."}
+{"level":"info","ts":"2024-07-04T23:49:45.160+0800","caller":"go-web-staging/main.go:82","msg":"Server exiting"}
+{"level":"error","ts":"2024-07-05T22:23:41.425+0800","caller":"mysql/mysql.go:26","msg":"连接数据库失败","error":"dial tcp 127.0.0.1:3306: connectex: No connection could be made because the target machine actively refused it."}
+{"level":"info","ts":"2024-07-05T22:31:12.920+0800","caller":"go-web-staging/main.go:73","msg":"Shutdown Server ..."}
+{"level":"info","ts":"2024-07-05T22:31:12.933+0800","caller":"go-web-staging/main.go:82","msg":"Server exiting"}
+{"level":"info","ts":"2024-07-05T23:03:39.108+0800","caller":"go-web-staging/main.go:73","msg":"Shutdown Server ..."}
+{"level":"info","ts":"2024-07-05T23:03:39.118+0800","caller":"go-web-staging/main.go:82","msg":"Server exiting"}

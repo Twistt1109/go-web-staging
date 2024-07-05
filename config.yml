@@ -2,13 +2,15 @@ name: "go-web"
 version: "1.0"
 mode: "debug"
 port: 8080
+start_time: "2024-07-01"
+machine_id: 1
 
 mysql:
   host: "127.0.0.1"
   port: 3306
   user: "root"
   password: "root"
-  database: "demo"
+  database: "gin-forum"
   max_idle: 10
   max_open: 10
 

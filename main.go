@@ -6,7 +6,8 @@ import (
 	"go-web-staging/dao/mysql"
 	"go-web-staging/dao/redis"
 	"go-web-staging/logger"
-	"go-web-staging/routes"
+	"go-web-staging/pkg/snowflake"
+	"go-web-staging/router"
 	"go-web-staging/setting"
 	"net/http"
 	"os"
@@ -46,8 +47,14 @@ func main() {
 	}
 	defer redis.Close()
 
+	// 5. 生成id
+	if err := snowflake.Init(setting.Conf.StartTime, setting.Conf.MachineID); err != nil {
+		fmt.Println("id生成失败")
+		return
+	}
+
 	// 5. 路由注册
-	r := routes.SetUp()
+	r := router.SetUp()
 
 	// 6. 启动服务
 	srv := &http.Server{

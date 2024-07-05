@@ -1,4 +1,4 @@
-package routes
+package router
 
 import (
 	"go-web-staging/logger"
