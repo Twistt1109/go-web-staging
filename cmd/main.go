@@ -47,16 +47,16 @@ func main() {
 	}
 	defer redis.Close()
 
-	// 5. 生成id
+	// 5. 生成雪花id
 	if err := snowflake.Init(setting.Conf.StartTime, setting.Conf.MachineID); err != nil {
 		fmt.Println("id生成失败")
 		return
 	}
 
-	// 5. 路由注册
+	// 6. 路由注册
 	r := router.SetUp()
 
-	// 6. 启动服务
+	// 7. 启动服务
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", setting.Conf.Port),
 		Handler: r,

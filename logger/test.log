@@ -6,3 +6,5 @@
 {"level":"info","ts":"2024-07-05T22:31:12.933+0800","caller":"go-web-staging/main.go:82","msg":"Server exiting"}
 {"level":"info","ts":"2024-07-05T23:03:39.108+0800","caller":"go-web-staging/main.go:73","msg":"Shutdown Server ..."}
 {"level":"info","ts":"2024-07-05T23:03:39.118+0800","caller":"go-web-staging/main.go:82","msg":"Server exiting"}
+{"level":"info","ts":"2024-07-05T23:21:44.558+0800","caller":"go-web-staging/main.go:81","msg":"Shutdown Server ..."}
+{"level":"info","ts":"2024-07-05T23:21:44.569+0800","caller":"go-web-staging/main.go:90","msg":"Server exiting"}
