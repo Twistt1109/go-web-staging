@@ -40,6 +40,7 @@ type RedisConfig struct {
 }
 
 type LogConfig struct {
+	Console    bool   `mapstructure:"console"`
 	Level      string `mapstructure:"level"`
 	Filename   string `mapstructure:"filename"`
 	MaxSize    int    `mapstructure:"max_size"`

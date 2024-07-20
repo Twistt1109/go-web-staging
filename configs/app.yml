@@ -22,7 +22,8 @@ redis:
   pool_size: 10
 
 log:
-  level: "debug"
+  console: true   # 日志内容输出到终端, 为true时 以下配置 无需设置
+  level: "debug"  # 该级别以上的日志才会被记录
   filename: "./logger/test.log"
   max_size: 100
   max_backups: 10

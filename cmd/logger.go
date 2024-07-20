@@ -17,6 +17,16 @@ import (
 )
 
 func InitLogger(cfg *app.LogConfig) (err error) {
+	var logger *zap.Logger
+
+	// 输入到终端
+	if cfg.Console {
+		logger, _ = zap.NewDevelopment()
+		zap.ReplaceGlobals(logger) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
+		return
+	}
+
+	// 输出到文件
 	encoder := getEncoder()                                                            // 获取日志编码器
 	writeSyncer := getLogWriter(cfg.Filename, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge) // 获取日志写入器
 
@@ -24,7 +34,7 @@ func InitLogger(cfg *app.LogConfig) (err error) {
 	err = le.UnmarshalText([]byte(cfg.Level))          // 解析日志级别
 	core := zapcore.NewCore(encoder, writeSyncer, *le) // 创建日志核心
 
-	logger := zap.New(core, zap.AddCaller()) // zap.AddCaller()添加调用信息
+	logger = zap.New(core, zap.AddCaller()) // zap.AddCaller()添加调用信息
 
 	zap.ReplaceGlobals(logger) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 	return
