@@ -3,12 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"go-web-staging/dao/mysql"
-	"go-web-staging/dao/redis"
-	"go-web-staging/logger"
+	"go-web-staging/internal/app"
 	"go-web-staging/pkg/snowflake"
-	"go-web-staging/router"
-	"go-web-staging/setting"
 	"net/http"
 	"os"
 	"os/signal"
@@ -21,44 +17,44 @@ import (
 func main() {
 	// TODO:
 	// 1. 加载配置文件
-	if err := setting.Init(); err != nil {
+	if err := app.InitConfig(); err != nil {
 		fmt.Println("配置文件加载失败")
 		return
 	}
 
 	// 2. 初始化日志
-	if err := logger.Init(setting.Conf.LogConfig); err != nil {
+	if err := InitLogger(app.Conf.LogConfig); err != nil {
 		fmt.Println("日志初始化失败")
 		return
 	}
 	defer zap.L().Sync() // 同步日志
 
 	// 3. 数据库连接
-	if err := mysql.Init(setting.Conf.MysqlConfig); err != nil {
+	if err := InitDB(app.Conf.MysqlConfig); err != nil {
 		fmt.Println("数据库连接失败")
 		return
 	}
-	defer mysql.Close()
+	defer CloseDB()
 
 	// 4. redis连接
-	if err := redis.Init(setting.Conf.RedisConfig); err != nil {
+	if err := InitRedis(app.Conf.RedisConfig); err != nil {
 		fmt.Println("redis连接失败")
 		return
 	}
-	defer redis.Close()
+	defer CloseRedis()
 
 	// 5. 生成雪花id
-	if err := snowflake.Init(setting.Conf.StartTime, setting.Conf.MachineID); err != nil {
+	if err := snowflake.Init(app.Conf.StartTime, app.Conf.MachineID); err != nil {
 		fmt.Println("id生成失败")
 		return
 	}
 
 	// 6. 路由注册
-	r := router.SetUp()
+	r := buildRoute()
 
 	// 7. 启动服务
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%d", setting.Conf.Port),
+		Addr:    fmt.Sprintf(":%d", app.Conf.Port),
 		Handler: r,
 	}
 

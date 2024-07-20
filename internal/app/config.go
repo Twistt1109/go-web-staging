@@ -1,4 +1,4 @@
-package setting
+package app
 
 import (
 	"fmt"
@@ -47,9 +47,9 @@ type LogConfig struct {
 	MaxBackups int    `mapstructure:"max_backups"`
 }
 
-func Init() (err error) {
+func InitConfig() (err error) {
 	v := viper.New()
-	v.SetConfigFile("config.yml")
+	v.SetConfigFile("../configs/app.yml") // 指定配置文件路径
 
 	// 读取配置文件
 	if err = v.ReadInConfig(); err != nil {

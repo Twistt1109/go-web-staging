@@ -1,7 +1,7 @@
-package logger
+package main
 
 import (
-	"go-web-staging/setting"
+	"go-web-staging/internal/app"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -16,7 +16,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-func Init(cfg *setting.LogConfig) (err error) {
+func InitLogger(cfg *app.LogConfig) (err error) {
 	encoder := getEncoder()                                                            // 获取日志编码器
 	writeSyncer := getLogWriter(cfg.Filename, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge) // 获取日志写入器
 

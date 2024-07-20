@@ -1,15 +1,15 @@
-package redis
+package main
 
 import (
 	"fmt"
-	"go-web-staging/setting"
+	"go-web-staging/internal/app"
 
 	"github.com/go-redis/redis"
 )
 
 var rdb *redis.Client
 
-func Init(cfg *setting.RedisConfig) (err error) {
+func InitRedis(cfg *app.RedisConfig) (err error) {
 
 	rdb = redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
@@ -25,6 +25,6 @@ func Init(cfg *setting.RedisConfig) (err error) {
 	return
 }
 
-func Close() {
+func CloseRedis() {
 	rdb.Close()
 }

@@ -1,8 +1,8 @@
-package mysql
+package main
 
 import (
 	"fmt"
-	"go-web-staging/setting"
+	"go-web-staging/internal/app"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -11,7 +11,7 @@ import (
 
 var db *sqlx.DB
 
-func Init(cfg *setting.MysqlConfig) (err error) {
+func InitDB(cfg *app.MysqlConfig) (err error) {
 	// 连接数据库
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		cfg.User,
@@ -33,6 +33,6 @@ func Init(cfg *setting.MysqlConfig) (err error) {
 }
 
 // 关闭数据库连接
-func Close() {
+func CloseDB() {
 	db.Close()
 }
