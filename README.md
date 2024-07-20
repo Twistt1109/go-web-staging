@@ -3,6 +3,14 @@
 使用雪花算法生成id是为了防止注册用户可以推断出网站多少人， 也是为了防止分库分表后id重复
 
 ## 项目结构
+project/
+|-- cmd
+|   |-- main.go
+|-- config/
+|   |-- app.yml
+|-- .env
+
+
 参考[golang-standards](https://github.com/golang-standards/project-layout/blob/master/README_zh-CN.md)
 
 ## Go目录

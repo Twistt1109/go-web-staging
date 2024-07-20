@@ -1,11 +1,15 @@
 package main
 
 import (
+	"go-web-staging/internal/auth"
+
 	"github.com/gin-gonic/gin"
 )
 
 func routes(r *gin.Engine) {
-	r.GET("/")
+	rg := r.Group("v1")
+
+	auth.ServeResouce(rg)
 }
 
 func buildRouter() *gin.Engine {
