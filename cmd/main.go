@@ -50,7 +50,7 @@ func main() {
 	}
 
 	// 6. 路由注册
-	r := buildRoute()
+	r := buildRouter()
 
 	// 7. 启动服务
 	srv := &http.Server{

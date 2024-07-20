@@ -8,7 +8,7 @@ func routes(r *gin.Engine) {
 	r.GET("/")
 }
 
-func buildRoute() *gin.Engine {
+func buildRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(GinLogger(), GinRecovery(true))
 
