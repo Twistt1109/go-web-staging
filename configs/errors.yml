@@ -1,0 +1,4 @@
+# 登陆验证
+UNAUTHORIZED:
+  message: "登录验证失败."
+  developer_message: "Authentication failed: {error}"

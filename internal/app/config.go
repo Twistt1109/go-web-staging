@@ -11,6 +11,7 @@ var Conf *AppConfig
 
 type AppConfig struct {
 	Name         string `mapstructure:"name"`
+	ErrorFile    string `mapstructure:"error_file"`
 	Version      string `mapstructure:"version"`
 	Mode         string `mapstructure:"mode"`
 	Port         int    `mapstructure:"port"`
@@ -52,6 +53,11 @@ func InitConfig() (err error) {
 	v := viper.New()
 	v.SetConfigFile("../configs/app.yml") // 指定配置文件路径
 
+	// v.SetDefault("error_file", "../config/errors.yaml")
+
+	v.SetEnvPrefix("app") // 设置环境变量的前缀	docker-comose文件设置environment时, 加上前缀, 大写
+	v.AutomaticEnv()      // 自动读取环境变量
+
 	// 读取配置文件
 	if err = v.ReadInConfig(); err != nil {
 		fmt.Println("load config filed err: ", err)
@@ -72,7 +78,6 @@ func InitConfig() (err error) {
 			return
 		}
 	})
-	fmt.Println(Conf.LogConfig)
 
 	return
 }
