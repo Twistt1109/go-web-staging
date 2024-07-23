@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 )
 
@@ -50,12 +51,16 @@ type LogConfig struct {
 }
 
 func InitConfig() (err error) {
+	// 加载 .env 文件中的配置到环境变量
+	// 如果是嵌套的结构体, 文件中参数命名格式: 以.连接(如MYSQL.HOST)
+	godotenv.Load("../.env")
+
 	v := viper.New()
 	v.SetConfigFile("../configs/app.yml") // 指定配置文件路径
 
 	// v.SetDefault("error_file", "../config/errors.yaml")
 
-	v.SetEnvPrefix("app") // 设置环境变量的前缀	docker-comose文件设置environment时, 加上前缀, 大写
+	v.SetEnvPrefix("app") // 设置环境变量的前缀, 加上前缀, 且大写
 	v.AutomaticEnv()      // 自动读取环境变量
 
 	// 读取配置文件
