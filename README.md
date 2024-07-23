@@ -10,6 +10,7 @@ project/
 |   |-- app.yml
 |-- .env
 
+如果开发环境需要使用真实地址, 又不想上传到仓库, 可以在`.env`中配置, 复制`.env.example`文件, 修改名称为`.env`
 
 参考[golang-standards](https://github.com/golang-standards/project-layout/blob/master/README_zh-CN.md)
 
