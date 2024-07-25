@@ -60,6 +60,8 @@ func main() {
 
 	go func() {
 		// 开启一个goroutine启动服务
+		zap.L().Info(fmt.Sprintf("Server is running at %s", srv.Addr) + " ...")
+
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			zap.L().Error("listen: %s\n", zap.Error(err))
 		}
