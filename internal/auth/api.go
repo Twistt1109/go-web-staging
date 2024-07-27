@@ -8,10 +8,11 @@ import (
 )
 
 type resource struct {
+	service Service
 }
 
-func ServeResouce(rg *gin.RouterGroup) {
-	r := &resource{}
+func ServeResouce(rg *gin.RouterGroup, service Service) {
+	r := &resource{service}
 
 	rg.POST("/signup", r.signup)
 }
@@ -26,6 +27,8 @@ func (r *resource) signup(c *gin.Context) {
 	}
 
 	// 2. 校验参数
+	r.service.Signup(c, *signup)
+
 	// 3. 调用业务
 	// 4. 返回结果
 	c.JSON(201, gin.H{

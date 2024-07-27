@@ -9,7 +9,7 @@ import (
 func routes(r *gin.Engine) {
 	rg := r.Group("v1")
 
-	auth.ServeResouce(rg)
+	auth.ServeResouce(rg, auth.NewService())
 }
 
 func buildRouter() *gin.Engine {
