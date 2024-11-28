@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"go-web-staging/internal/requests"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -14,26 +14,45 @@ type resource struct {
 func ServeResouce(rg *gin.RouterGroup, service Service) {
 	r := &resource{service}
 
-	rg.POST("/signup", r.signup)
+	rg.POST("/reg", r.reg)
+
+	rg.POST("/auth", r.auth)
 }
 
-func (r *resource) signup(c *gin.Context) {
+func (r *resource) reg(c *gin.Context) {
 	// 1. 获取参数
-	signup := &requests.Signup{}
-	if err := c.ShouldBind(signup); err != nil {
-		zap.L().Error("signup should bind", zap.Error(err))
-		c.JSON(401, gin.H{"msg": "参数错误"})
+	reg := &Reg{}
+	if err := c.ShouldBind(reg); err != nil {
+		zap.L().Error("reg should bind", zap.Error(err))
+		c.JSON(401, gin.H{"msg": err.Error()})
 		return
 	}
 
 	// 2. 校验参数
-	r.service.Signup(c, *signup)
+	// if err := reg.Validate(); err != nil {
+	// 	c.JSON(401, gin.H{"msg": err.Error()})
+	// 	return
+	// }
 
 	// 3. 调用业务
+	token, err := r.service.Reg(c, *reg)
+	fmt.Println("-----------------token", token)
 	// 4. 返回结果
 	c.JSON(201, gin.H{
-		"msg":      "success",
-		"username": signup.Username,
-		"password": signup.Password,
+		"msg":   "success",
+		"token": token,
+		"err":   err,
 	})
+}
+
+func (r *resource) auth(c *gin.Context) {
+
+	var input Auth
+	if err := c.ShouldBind(&input); err != nil {
+		zap.L().Error("auth should bind", zap.Error(err))
+		c.JSON(401, gin.H{"msg": err.Error()})
+		return
+	}
+
+	r.service.Auth(c, input)
 }
