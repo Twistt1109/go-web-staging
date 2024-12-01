@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	res "go-web-staging/pkg/response"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -24,7 +25,7 @@ func (r *resource) reg(c *gin.Context) {
 	reg := &Reg{}
 	if err := c.ShouldBind(reg); err != nil {
 		zap.L().Error("reg should bind", zap.Error(err))
-		c.JSON(401, gin.H{"msg": err.Error()})
+		res.ResponseErrorWithMsg(c, res.CodeInvalidParam, err.Error())
 		return
 	}
 
@@ -38,11 +39,7 @@ func (r *resource) reg(c *gin.Context) {
 	token, err := r.service.Reg(c, *reg)
 	fmt.Println("-----------------token", token)
 	// 4. 返回结果
-	c.JSON(201, gin.H{
-		"msg":   "success",
-		"token": token,
-		"err":   err,
-	})
+	res.Response(c, token, err)
 }
 
 func (r *resource) auth(c *gin.Context) {
@@ -50,7 +47,7 @@ func (r *resource) auth(c *gin.Context) {
 	var input Auth
 	if err := c.ShouldBind(&input); err != nil {
 		zap.L().Error("auth should bind", zap.Error(err))
-		c.JSON(401, gin.H{"msg": err.Error()})
+		res.ResponseErrorWithMsg(c, res.CodeInvalidParam, err.Error())
 		return
 	}
 

@@ -1,8 +1,9 @@
 package auth
 
 import (
-	"fmt"
+	"go-web-staging/internal/app"
 	"go-web-staging/internal/entity"
+	"go-web-staging/pkg/middlewares"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -37,20 +38,14 @@ func (s *service) Reg(c *gin.Context, req Reg) (string, error) {
 }
 
 func (s *service) Auth(c *gin.Context, auth Auth) (string, error) {
-	token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzI4MTIwMDYsInVzZXJJZCI6MCwidXNlcm5hbWUiOiJ0d2lzdCJ9.AdNWqwIkR1MMcUhQwCjPdg00o_D8q0nSD0-MAury2EE"
-	jt, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
-		fmt.Println("1111111111", token)
-		return []byte("4564564564"), nil
-	})
 
-	fmt.Println("222222222222222222", jt.Claims.(jwt.MapClaims)["username"], err)
 	return "", nil
 }
 
 func (s *service) generateJWT(user *entity.User) (string, error) {
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"userId":   user.UserID,
-		"username": user.Username,
-		"exp":      time.Now().Add(time.Hour * 1).Unix(),
-	}).SignedString([]byte("4564564564"))
+		middlewares.UserID: user.UserID,
+		"username":         user.Username,
+		"exp":              time.Now().Add(time.Hour * 1).Unix(),
+	}).SignedString([]byte(app.Conf.Secret))
 }
